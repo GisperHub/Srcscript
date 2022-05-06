@@ -3318,22 +3318,22 @@ end
 
 
 
-_G.Color = Color3.fromRGB(102, 0, 255) 
+_G.Color = Color3.fromRGB(102,0,255) 
+
+-- Auto Farm
 
 local PlaceId = game.PlaceId 
 if PlaceId == 2753915549 then
     OldWolrd = true
 end
 
-
--- TweenTP
    function TP(P)
     Distance = (P.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
     if Distance < 250 then
-       Speed = 1000
+       Speed = 800
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = P
-    elseif Distance < 1000 then
-       Speed = 300
+    elseif Distance < 800 then
+       Speed = 150
     end
     game:GetService("TweenService"):Create(
     game.Players.LocalPlayer.Character.HumanoidRootPart,
@@ -3342,7 +3342,6 @@ end
     ):Play()
  end
 
--- Noclip
 spawn(function()
     game:GetService("RunService").Heartbeat:Connect(function()
         if _G.Noclip or _G.AutoFarm then
@@ -3355,13 +3354,11 @@ spawn(function()
     end)
 end)
 
--- Click
 function click()
    game:GetService'VirtualUser':CaptureController()
    game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 end
 
--- Equip
 	function itemequip(ToolSe)
 	   if game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe) then
 		   tool = game.Players.LocalPlayer.Backpack:FindFirstChild(ToolSe)
@@ -3369,7 +3366,7 @@ end
 		   game.Players.LocalPlayer.Character.Humanoid:EquipTool(tool)
 	   end
 	end
--- CheckQuest
+
 function CheckQuest()
     local Lv = game:GetService("Players").LocalPlayer.Data.Level.Value
     if OldWolrd then
@@ -3558,9 +3555,9 @@ elseif Level >= 650 then
         end
     end
 end
-    local GISPER = nill:Window("SCRIPT BLOXFRUIT")
-    local GISPERServer = GISPER:Server("GISPER HUB",8521503225)
-    local Genaral = GISPERServer:Channel("Genaral")
+    local Gisper = nill:Window("SCRIPT BLOXFRUIT [BERAVERSION]")
+    local GisperServer = Gisper:Server("GISPER HUB",8521503225)
+    local Genaral = GisperServer:Channel("Genaral")
     Genaral:Label("Select Weapon")
     Weapon = {}
 for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
@@ -3571,20 +3568,26 @@ end
     local drop = Genaral:Dropdown("Select Weapon",Weapon, function(v)
         _G.SelectWeapon = v
     end)
-    Genaral:Button("Refresh Weapon", function()
+    Genaral:Button("Button", function()
 drop:Clear()
 for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
     if v:IsA ("Tool") then
         table.insert(Weapon,v.Name)
 drop:Add(v.Name)
+            end
         end
-    end
     end)
-    Genaral:Label("Auto Farm Level")
-    Genaral:Toggle("Auto Farm", _G.AutoFarm, function(v)
+    Genaral:Label("Auto Farm Level [1 - 2300]")
+    Genaral:Toggle("Auto Farm ", _G.AutoFarm, function(v)
         _G.AutoFarm = v
     end)
-spawn(function()
+        Genaral:Toggle("Auto Newworld ", _G.AutoNewworld, function(v)
+        _G.AutoNewworld = v
+    end)
+        Genaral:Toggle("Auto Factory ", _G.AutoFactory, function(v)
+        _G.AutoFactory = v
+    end)
+    spawn(function()
     while wait() do
         if _G.AutoFarm then
         CheckQuest()
@@ -3616,62 +3619,6 @@ spawn(function()
                     game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AbandonQuest")
                     end
                 end
-        end
-    end
-end)
-    local Combat = GISPERServer:Channel("Combat")
-    Combat:Label("Tool Auto Farm")
-    Combat:Toggle("Fast Attack", _G.FastAttack, function(v)
-        _G.FastAttack = v
-   game:GetService("RunService").RenderStepped:Connect(function()
-    pcall(function()
-        if _G.FastAttack then
-            local Combat = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
-            local Cemara = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework.CameraShaker)
-            Cemara.CameraShakeInstance.CameraShakeState = {FadingIn = 3, FadingOut = 2, Sustained = 0, Inactive = 1}
-            Combat.activeController.timeToNextAttack = 0
-            Combat.activeController.hitboxMagnitude = 120
-            Combat.activeController.increment = 3
-                end
-            end)
-        end) 
-    end)
-    Combat:Toggle("Auto Set Spawn", _G.AutoSetSpawn, function(v)
-        _G.AutoSetSpawn = v
-while _G.SetSpawn do wait()
-pcall(function()
-if game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
-game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("SetSpawnPoint")
-                end
-            end)
-        end
-    end)
-    Combat:Toggle("Brind Mon", _G.BringMon, function(v)
-        _G.BringMon = v
-while _G.BringMon do wait()
-    pcall(function()
-        CheckQuest()
-for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-for x,y in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-if v.Name == Mon then
-    if y.Name == Mon then
-   v.HumanoidRootPart.CFrame = y.HumanoidRootPart.CFrame
-   v.HumanoidRootPart.Size = Vector3.new(60,60,60)
-   y.HumanoidRootPart.Size = Vector3.new(60,60,60)
-   v.HumanoidRootPart.Transparency = 1
-   v.HumanoidRootPart.CanCollide = false
-   y.HumanoidRootPart.CanCollide = false
-   v.Humanoid.WalkSpeed = 0
-   y.Humanoid.WalkSpeed = 0
-   v.Humanoid.JumpPower = 0
-   y.Humanoid.JumpPower = 0
-   if sethiddenproperty then
-     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            end
-                        end
-                    end
-                end
             end
-        end)
-    end
+        end
     end)
